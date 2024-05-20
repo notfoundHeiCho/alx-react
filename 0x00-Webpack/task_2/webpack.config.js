@@ -1,62 +1,34 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'public'),
-        clean: true,
-    },
-    mode: 'production',
-    module: {
-        rules: [
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+  mode: 'production',
+  entry: './js/dashboard_main.js',
+  output: {
+    path: path.resolve(__dirname, 'public'),
+    filename: 'bundle.js',
+  },
+  performance: {
+    maxAssetSize: 1000000,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          "file-loader",
+          {
+            loader: "image-webpack-loader",
+            options: {
+              bypassOnDebug: true, // webpack@1.x
+              disable: true, // webpack@2.x and newer
             },
-            {
-                test: /\.(png|jpe?g|gif)$/i,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'assets',
-                        },
-                    },
-                    {
-                        loader: 'image-webpack-loader',
-                        options: {
-                            mozjpeg: {
-                                progressive: true,
-                                quality: 65,
-                            },
-                            optipng: {
-                                enabled: false,
-                            },
-                            pngquant: {
-                                quality: [0.65, 0.90],
-                                speed: 4,
-                            },
-                            gifsicle: {
-                                interlaced: false,
-                            },
-                            webp: {
-                                quality: 75,
-                            },
-                        },
-                    },
-                ],
-            },
+          },
         ],
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-        }),
+      },
     ],
-    performance: {
-        maxAssetSize: 100000,
-    },
+  },
 };
